@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ app_name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>{{ app_name }}</h1>
+      <p>A simple Flask + MySQL notes app for the assignment.</p>
+    </header>
+
+    <section class="card">
+      <h2>Add Note</h2>
+      <form method="post" class="form">
+        <label>
+          Title
+          <input type="text" name="title" required />
+        </label>
+        <label>
+          Content
+          <textarea name="content" rows="4" required></textarea>
+        </label>
+        <button type="submit">Save</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Notes</h2>
+      {% if notes %}
+        <ul class="notes">
+          {% for note in notes %}
+            <li>
+              <div class="note">
+                <div class="note-title">{{ note.title }}</div>
+                <div class="note-content">{{ note.content }}</div>
+                <div class="note-meta">{{ note.created_at }}</div>
+              </div>
+              <form method="post" action="{{ url_for('delete_note', note_id=note.id) }}">
+                <button type="submit" class="danger">Delete</button>
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No notes yet. Add your first note above.</p>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>
